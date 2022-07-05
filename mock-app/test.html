@@ -1,30 +1,41 @@
 <html>
     <head>
         <title>Worte drehen</title>
+
         <style>
             #checker{
                 width: 100%;
                 height: 300px;
                 background-color: gray;
             }
+
             #checker.wrong{
                 background-color: red;
             }
+
             #checker.correct{
                 background-color: green;
             }
         </style>
+
         <script type="text/javascript">
             function generateWord(){
                 let
                 startfeld=document.getElementById('startwort'),
                 endfeld=document.getElementById('ratewort'),
                 startvalue=startfeld.value
+                
+                
+                clearResult()
                 endfeld.value=shuffle(startvalue)
+
 
             }
 
             function shuffle(shufflestring){
+                if(shufflestring==''){
+                    return ''
+                }
                 let 
                 stringarray=shufflestring.split(''),
                 stringarrayLength=stringarray.length,
@@ -35,7 +46,7 @@
                 stringarray[(stringarrayLength-1)]
 
             }
-            
+
             function checkAnswer(){
                 let
                 startfeld=document.getElementById('startwort'),
@@ -43,16 +54,31 @@
                 startvalue=startfeld.value,
                 antwortvalue=antwortfeld.value
                 
-                if(startvalue==antwortvalue){
-                    let checker=document.getElementById('checker')
-                    checker.classList.add('correct')
-                    checker.classList.remove('wrong')
-                }else{
-                    let checker=document.getElementById('checker')
-                    
-                    checker.classList.remove('correct')
-                    checker.classList.add('wrong')
+                clearResult()
+
+                if(startvalue == '' || antwortvalue == ''){
+                    return
                 }
+                
+                if(startvalue==antwortvalue){
+                    showCorrectResult()
+                }else{
+                    showWrongResult()
+                }
+            }
+
+            function showCorrectResult(){
+                let checker=document.getElementById('checker')
+                    checker.classList.add('correct')
+            }
+            function showWrongResult(){
+                let checker=document.getElementById('checker')
+                    checker.classList.add('wrong')
+            }
+            function clearResult(){
+                let checker=document.getElementById('checker')
+                checker.classList.remove('wrong')
+                checker.classList.remove('correct')
             }
         </script>
     </head>
