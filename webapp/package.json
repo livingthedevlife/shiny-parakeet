@@ -1,0 +1,28 @@
+{
+  "name": "webapp",
+  "version": "1.0.0",
+  "description": "a little webapp",
+  "main": "/dist/index.html",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/livingthedevlife/shiny-parakeet.git"
+  },
+  "author": "livingthedevlife",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/livingthedevlife/shiny-parakeet/issues"
+  },
+  "homepage": "https://github.com/livingthedevlife/shiny-parakeet#readme",
+  "devDependencies": {
+    "grunt": "^1.5.3",
+    "grunt-cli": "^1.4.3",
+    "grunt-contrib-copy": "^1.0.0",
+    "grunt-contrib-sass": "^2.0.0",
+    "grunt-contrib-uglify": "^5.2.2",
+    "grunt-contrib-watch": "^1.1.0",
+    "jquery": "^3.6.0"
+  }
+}
