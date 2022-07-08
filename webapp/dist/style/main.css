@@ -1,14 +1,43 @@
 body {
-  background-color: #1E1E1E;
+  background-color: #1e1e1e;
   color: #52993E;
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 17px;
+}
+
+header {
+  border-bottom: solid #DCCD79 1px;
+  padding: 1rem;
+}
+header h1 {
+  margin: 0;
+  font-size: 2.3rem;
 }
 
 h1 {
   color: #DCCD79;
 }
 
-div h1 {
-  color: paleturquoise;
+h2 {
+  color: #569cd6;
+}
+
+.container-main {
+  padding: 0 1rem;
+}
+.container-main .taskbar button {
+  border: none;
+  border-bottom: solid #569cd6 1px;
+  background-color: transparent;
+  color: #569cd6;
+  padding: 0.5rem 1rem;
+  transition: all 500ms;
+}
+.container-main .taskbar button:hover {
+  background: linear-gradient(180deg, #1e1e1e 0%, #1e1e1e 65%, #569cd6 100%);
+}
+.container-main .color-important {
+  color: #DCCD79;
 }
 
 /*# sourceMappingURL=dist/style/main.css.map */

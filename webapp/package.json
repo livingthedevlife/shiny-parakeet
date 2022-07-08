@@ -23,6 +23,7 @@
     "grunt-contrib-sass": "^2.0.0",
     "grunt-contrib-uglify": "^5.2.2",
     "grunt-contrib-watch": "^1.1.0",
-    "jquery": "^3.6.0"
+    "jquery": "^3.6.0",
+    "jquery-ui-dist": "^1.13.1"
   }
 }

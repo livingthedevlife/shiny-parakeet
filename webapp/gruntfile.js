@@ -27,7 +27,8 @@ module.exports = function(grunt) {
             files: [
               // includes files within path
               {expand: true, src: ['src/res'], dest: 'dist/res', filter: 'isFile'},
-              {expand: true, src: ['node_modules/jquery/dist/jquery.js'], dest: 'dist/lib/jquery/jquery.js', filter: 'isFile'},
+              {expand: true, src: ['node_modules/jquery/dist/jquery.js'], dest: 'dist/lib/jquery/jquery.js', filter: 'isFile'}
+
         
             ],
           },

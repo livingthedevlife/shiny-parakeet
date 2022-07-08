@@ -1,18 +1,51 @@
 $green: #52993E;
 $yellow: #DCCD79;
 $red: #C40A42;
-$blue: #569CD6;
-$grey: #1E1E1E;
+$blue: #569cd6;
+$grey: #1e1e1e;
+$padding-basic:1rem;
 
 body {
     background-color: $grey;
     color: $green;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 17px;
 }
+
+header{
+    border-bottom: solid $yellow 1px;
+    padding: $padding-basic;
+    h1 {
+        margin:0;
+        font-size: 2.3rem;
+    }
+}
+
 h1 {
     color: $yellow;
 }
-div {
-    h1 {
-        color: paleturquoise;
-    }
+h2{
+    color:$blue;
+}
+.container-main {
+   padding: 0 $padding-basic;
+
+   .taskbar{
+
+        button{
+            border:none;
+            border-bottom: solid $blue 1px;
+
+            background-color: transparent;
+            color:$blue;
+            padding: 0.5rem 1rem;
+            transition: all 500ms;
+            &:hover{
+                background: linear-gradient(180deg, $grey 0%, $grey 65%, $blue 100%); 
+            }
+        }
+   }
+   .color-important{
+    color: $yellow;
+   }
 } 
