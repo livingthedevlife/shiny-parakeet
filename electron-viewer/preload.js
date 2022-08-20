@@ -1,3 +1,5 @@
+const { contextBridge, ipcRenderer } = require('electron')
+
 window.addEventListener('DOMContentLoaded', () => {
     const replaceText = (selector, text) => {
       const element = document.getElementById(selector)
@@ -8,3 +10,8 @@ window.addEventListener('DOMContentLoaded', () => {
       replaceText(`${type}-version`, process.versions[type])
     }
   })
+
+contextBridge.exposeInMainWorld('darkMode', {
+  toggle: () => ipcRenderer.invoke('dark-mode:toggle'),
+  system: () => ipcRenderer.invoke('dark-mode:system')
+})
