@@ -1,0 +1,23 @@
+{
+  "name": "electron-viewer",
+  "version": "1.0.0",
+  "description": "a program to visualize cypress Tests",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "electron ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/livingthedevlife/shiny-parakeet.git"
+  },
+  "author": "livingTheDevLife",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/livingthedevlife/shiny-parakeet/issues"
+  },
+  "homepage": "https://github.com/livingthedevlife/shiny-parakeet#readme",
+  "devDependencies": {
+    "electron": "^20.0.3"
+  }
+}
