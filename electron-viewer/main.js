@@ -5,13 +5,13 @@ function createWindow () {
   const win = new BrowserWindow({
     width: 800,
     height: 600,
+/*     frame:false, */
     webPreferences: {
       preload: path.join(__dirname, 'preload.js')
     }
   })
-
   win.loadFile('index.html')
-  
+  win.webContents.openDevTools()
   ipcMain.handle('dark-mode:toggle', () => {
     if (nativeTheme.shouldUseDarkColors) {
       nativeTheme.themeSource = 'light'
@@ -41,3 +41,4 @@ app.on('window-all-closed', () => {
     app.quit()
   }
 })
+

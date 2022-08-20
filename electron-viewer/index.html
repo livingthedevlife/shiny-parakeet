@@ -19,6 +19,18 @@
     <button id="toggle-dark-mode">Toggle Dark Mode</button>
     <button id="reset-to-system">Reset to System Theme</button>
 
+
+    <pre id="source"></pre>
+    <script>
+var readfile = require('remote').require('./readfile');
+readfile(function(err, text) {
+  console.log('readfile:', err, text);
+  document.getElementById('source').innerHTML = text;
+
+});
+    </script>
+
+
     <script src="renderer.js"></script>
 </body>
 </html>
