@@ -21,22 +21,20 @@
     <div>
         <button id="select-root-folder">Select root folder</button>
         <p>
-            <span id="root-folder-name"></span>
+            Root Folder: <strong id="root-folder-name"></strong>
         </p>
+    </div>
+    <div>
+        <button id="list-files-btn">List files</button>
+        <pre id="list-files">
+            
+        </pre>
     </div>
 
 
 
 
     <pre id="source"></pre>
-    <script>
-var readfile = require('remote').require('./readfile');
-readfile(function(err, text) {
-  console.log('readfile:', err, text);
-  document.getElementById('source').innerHTML = text;
-
-});
-    </script>
 
 
     <script src="renderer.js"></script>

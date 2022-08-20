@@ -45,11 +45,16 @@ function addIpcHandles(){
     ipcMain.handle('dark-mode:system', () => {
         nativeTheme.themeSource = 'system'
     })
+
     ipcMain.handle('dia:folder', () => {
         return dialog.showOpenDialog({
             title:'Select root directory',
             defaultPath:'G:/livingthedevlife/shiny-parakeet/electron-viewer/',
             properties: ['openDirectory'] 
         })
+    })
+
+    ipcMain.handle('evFile:list',(event, arg)=>{
+return arg
     })
 }

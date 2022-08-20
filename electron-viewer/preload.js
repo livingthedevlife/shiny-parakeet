@@ -20,3 +20,7 @@ contextBridge.exposeInMainWorld('darkMode', {
 contextBridge.exposeInMainWorld('dia', {
     folder: () =>ipcRenderer.invoke('dia:folder')
   })
+
+contextBridge.exposeInMainWorld('evFile',{
+    list:(path)=>ipcRenderer.invoke('evFile:list',path)
+})

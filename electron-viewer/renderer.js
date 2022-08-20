@@ -1,3 +1,8 @@
+const 
+    btnListFiles = document.getElementById('list-files-btn'),
+    preListFiles = document.getElementById('list-files'),
+    rootFolderPath = document.getElementById('root-folder-name')
+
 
 document.getElementById('toggle-dark-mode').addEventListener('click', async () => {
     const isDarkMode = await window.darkMode.toggle()
@@ -12,5 +17,10 @@ document.getElementById('toggle-dark-mode').addEventListener('click', async () =
   
   document.getElementById('select-root-folder').addEventListener('click', async () => {
     const folder= await window.dia.folder()
-    document.getElementById('root-folder-name').innerHTML = folder.filePaths[0];
+    rootFolderPath.innerHTML = folder.filePaths[0];
+  })
+
+btnListFiles.addEventListener('click', async () => {
+    const fileList= await window.evFile.list(rootFolderPath.innerHTML)
+    preListFiles.innerHTML=fileList
   })
