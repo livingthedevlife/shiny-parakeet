@@ -1,4 +1,4 @@
-const { app, BrowserWindow, ipcMain, nativeTheme } = require('electron')
+const { app, BrowserWindow, ipcMain, nativeTheme, dialog  } = require('electron')
 const path = require('path')
 
 function createWindow () {
@@ -23,6 +23,12 @@ function createWindow () {
 
   ipcMain.handle('dark-mode:system', () => {
     nativeTheme.themeSource = 'system'
+  })
+  ipcMain.handle('dia:folder', () => {
+    let folder= dialog.showOpenDialog({ title:'Select root directory',defaultPath:'G:/livingthedevlife/shiny-parakeet/electron-viewer/',properties: ['openDirectory'] })
+    console.log(folder)
+    debugger;
+    return folder
   })
 }
 
