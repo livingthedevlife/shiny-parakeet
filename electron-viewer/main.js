@@ -1,5 +1,9 @@
 const { app, BrowserWindow, ipcMain, nativeTheme, dialog  } = require('electron')
-const path = require('path')
+const 
+    path = require('path'),
+    fs = require('fs'),
+    dir= require('node-dir')
+
 
 function createWindow () {
   const win = new BrowserWindow({
@@ -54,7 +58,30 @@ function addIpcHandles(){
         })
     })
 
-    ipcMain.handle('evFile:list',(event, arg)=>{
-return arg
+    ipcMain.handle('evFile:list',(event, folderPath)=>{
+        return dir.files(folderPath, {sync:true});
     })
+}
+
+function loopFolder(folderPath){
+    console.log('loopFolder')
+    const 
+        contentList=fs.readdirSync(folderPath),
+        contents={}
+
+    contentList.forEach((content)=>{
+        const contentpath = folderPath + "/" + content
+
+        if (fs.statSync(contentpath).isDirectory()) {
+            contents[content]= 'folder'//loopFolder(folderPath)
+        }else{
+            contents[content]='rawFile'//!parseFile(fs.readFileSync(contentpath))
+        }
+    });
+    return contents
+}
+
+
+function parseFile(rawFile){
+    return 'rawFile'
 }
