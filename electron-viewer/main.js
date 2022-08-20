@@ -12,24 +12,8 @@ function createWindow () {
   })
   win.loadFile('index.html')
   win.webContents.openDevTools()
-  ipcMain.handle('dark-mode:toggle', () => {
-    if (nativeTheme.shouldUseDarkColors) {
-      nativeTheme.themeSource = 'light'
-    } else {
-      nativeTheme.themeSource = 'dark'
-    }
-    return nativeTheme.shouldUseDarkColors
-  })
 
-  ipcMain.handle('dark-mode:system', () => {
-    nativeTheme.themeSource = 'system'
-  })
-  ipcMain.handle('dia:folder', () => {
-    let folder= dialog.showOpenDialog({ title:'Select root directory',defaultPath:'G:/livingthedevlife/shiny-parakeet/electron-viewer/',properties: ['openDirectory'] })
-    console.log(folder)
-    debugger;
-    return folder
-  })
+  addIpcHandles()
 }
 
 app.whenReady().then(() => {
@@ -48,3 +32,24 @@ app.on('window-all-closed', () => {
   }
 })
 
+function addIpcHandles(){
+    ipcMain.handle('dark-mode:toggle', () => {
+        if (nativeTheme.shouldUseDarkColors) {
+            nativeTheme.themeSource = 'light'
+        } else {
+            nativeTheme.themeSource = 'dark'
+        }
+        return nativeTheme.shouldUseDarkColors
+    })
+
+    ipcMain.handle('dark-mode:system', () => {
+        nativeTheme.themeSource = 'system'
+    })
+    ipcMain.handle('dia:folder', () => {
+        return dialog.showOpenDialog({
+            title:'Select root directory',
+            defaultPath:'G:/livingthedevlife/shiny-parakeet/electron-viewer/',
+            properties: ['openDirectory'] 
+        })
+    })
+}
