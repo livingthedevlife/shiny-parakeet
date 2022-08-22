@@ -21,6 +21,10 @@ document.getElementById('toggle-dark-mode').addEventListener('click', async () =
   })
 
 btnListFiles.addEventListener('click', async () => {
-    const fileList= await window.evFile.list(rootFolderPath.innerHTML)
-    preListFiles.innerHTML=JSON.stringify(fileList)
+    const 
+        fileList= await window.evFile.list(rootFolderPath.innerHTML)
+        
+       let files= await window.evFile.parseFilesFromList(fileList,rootFolderPath.innerHTML)
+
+    preListFiles.innerHTML=JSON.stringify(files)
   })

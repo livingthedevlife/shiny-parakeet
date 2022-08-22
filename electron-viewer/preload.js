@@ -22,5 +22,6 @@ contextBridge.exposeInMainWorld('dia', {
   })
 
 contextBridge.exposeInMainWorld('evFile',{
-    list:(path)=>ipcRenderer.invoke('evFile:list',path)
+    list:(path)=>ipcRenderer.invoke('evFile:list',path),
+    parseFilesFromList:(fileList,rootFolderPath)=>ipcRenderer.invoke('evFile:parse',fileList,rootFolderPath)
 })
