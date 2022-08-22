@@ -60,28 +60,54 @@ function addIpcHandles(){
 
     ipcMain.handle('evFile:list',(event, folderPath)=>{
         return dir.files(folderPath, {sync:true});
+
+    })
+    ipcMain.handle('evFile:parse',(event, fileList, rootFolderPath)=>{
+        const files={}
+        fileList.forEach((filepath)=>{
+            const path = parsefilepath(rootFolderPath,filepath)
+
+            console.log(path)
+            try {
+                const data = fs.readFileSync(filepath, 'utf8');
+                files[path]=parseFile(data)
+              } catch (err) {
+                console.error(err);
+              }
+        })
+        return files
+        
     })
 }
 
-function loopFolder(folderPath){
-    console.log('loopFolder')
-    const 
-        contentList=fs.readdirSync(folderPath),
-        contents={}
 
-    contentList.forEach((content)=>{
-        const contentpath = folderPath + "/" + content
+function parsefilepath(rootFolderPath,filepath){
+    return filepath.replace(rootFolderPath,'')//.split('\\')
 
-        if (fs.statSync(contentpath).isDirectory()) {
-            contents[content]= 'folder'//loopFolder(folderPath)
-        }else{
-            contents[content]='rawFile'//!parseFile(fs.readFileSync(contentpath))
-        }
-    });
-    return contents
 }
-
-
 function parseFile(rawFile){
-    return 'rawFile'
+    const file={
+        state:0,
+        title:'',
+        tests:{}
+    }
+    let currentTest=''
+    rawFile
+        .match(/(?:x?define|x?it|\/\/ARRANGE|\/\/ACT|\/\/ASSERT).*/g)
+        .forEach((line)=>{
+            if(line.match(/x?define/)){
+                file.title= getTitle(line)
+            }else if(line.match(/x?it/)){
+                currentTest= getTitle(line)
+                console.log(currentTest)
+                file.tests[currentTest]=[]
+            }else{
+                length=file.tests[currentTest]
+                file.tests[currentTest].push(line)
+            }
+        })
+    return file
+}
+function getTitle(line){
+    return line.match(/\('([^']*)/g).replace('(\'','')
 }
