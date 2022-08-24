@@ -4,6 +4,12 @@ const
     fs = require('fs'),
     dir= require('node-dir')
 
+const TESTSTATE={
+    untested:1,
+    manually:2,
+    automated:3,
+    integrated:4
+}    
 
 function createWindow () {
   const win = new BrowserWindow({
@@ -63,51 +69,96 @@ function addIpcHandles(){
 
     })
     ipcMain.handle('evFile:parse',(event, fileList, rootFolderPath)=>{
-        const files={}
+        let itemArray=[]
+
         fileList.forEach((filepath)=>{
             const path = parsefilepath(rootFolderPath,filepath)
-
             console.log(path)
             try {
-                const data = fs.readFileSync(filepath, 'utf8');
-                files[path]=parseFile(data)
+                const 
+                    data = fs.readFileSync(filepath, 'utf8')
+
+                itemArray=itemArray.concat(parseFile(data,path))
+
               } catch (err) {
                 console.error(err);
               }
         })
-        return files
+        return itemArray
         
     })
-}
+    
+    ipcMain.handle('evFile:convertForDiag',(event, files)=>{
+        return{
+            name:'Tests',
+            children:[
+                {
+                    name:'bla',
+                    state:2,
+                    children:[],
+                    steps:[]
+                }
+            ]
+        }
+    })
 
+}
+function parseFileObject(element){
+    const root={
+        name:'Tests',
+        children:[]
+    }
+
+for (const [key, value] of Object.entries(element)) {
+
+    if(key.match(/\.cy\.js$/)){
+        rootparseAsTest(value)
+    }else{
+        parseAsFolder(value)
+    }
+
+  }
+}
 
 function parsefilepath(rootFolderPath,filepath){
-    return filepath.replace(rootFolderPath,'')//.split('\\')
+    return filepath.replace(rootFolderPath,'').replace(/^\\/,'').replace('\\','/')
 
 }
-function parseFile(rawFile){
-    const file={
+function parseFile(rawFile,path){
+    const files=[{
+        path:path,
         state:0,
-        title:'',
-        tests:{}
-    }
-    let currentTest=''
+    }]
+    let definepath,testpath
     rawFile
         .match(/(?:x?define|x?it|\/\/ARRANGE|\/\/ACT|\/\/ASSERT).*/g)
         .forEach((line)=>{
+            console.log(line)
             if(line.match(/x?define/)){
-                file.title= getTitle(line)
+                definepath=path +'/'+getTitle(line)
+                files.push({
+                    path:definepath,
+                    state:(line.match(/xdefine/))?TESTSTATE.untested:TESTSTATE.manually
+                    
+                })
             }else if(line.match(/x?it/)){
-                currentTest= getTitle(line)
-                console.log(currentTest)
-                file.tests[currentTest]=[]
+
+                testpath=definepath +'/'+getTitle(line)
+                files.push({
+                    path:testpath,
+                    steps:[],
+                    weight:1,
+                    state:(line.match(/xit/))?TESTSTATE.manually:TESTSTATE.automated
+                })
             }else{
-                length=file.tests[currentTest]
-                file.tests[currentTest].push(line)
+                const 
+                    index=(files.length-1)||0
+                    parentTest =files[index]
+                parentTest.steps.push(line)
             }
         })
-    return file
+    return files
 }
 function getTitle(line){
-    return line.match(/\('([^']*)/g).replace('(\'','')
+    return line.match(/\('([^']*)/g)[0].replace('(\'','')
 }
