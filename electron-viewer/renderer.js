@@ -48,8 +48,9 @@ btnListFiles.addEventListener('click', async () => {
     diagram=Icicle(
       hierarchy, 
       {
+
         color: null,
-        fill:d=>{return colorState(d.data.state)},
+        fill:d=>{return colorState(d)},
         label: d => d.id,
         title: (d, n) => `${n.ancestors().reverse().map(d => d.id).join(".")}\n${n.value.toLocaleString("en")}` // hover text
       }
@@ -58,7 +59,9 @@ btnListFiles.addEventListener('click', async () => {
     console.log('hierarchy',hierarchy)
     chart.append(diagram)
  })
- function colorState(state){
+ function colorState(d){
+  let state = getNodeState(d)
+
   console.log('state',state)
   switch(state){
     case 1:
@@ -70,7 +73,7 @@ btnListFiles.addEventListener('click', async () => {
     case 4:
       return 'green'
     default:
-      return '#ccc'
+      return '#BBD'
   }
  }
 // Copyright 2021 Observable, Inc.

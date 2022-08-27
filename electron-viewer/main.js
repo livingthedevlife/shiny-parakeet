@@ -65,7 +65,7 @@ function addIpcHandles(){
     })
 
     ipcMain.handle('evFile:list',(event, folderPath)=>{
-        return dir.files(folderPath, {sync:true});
+        return dir.files(folderPath, {sync:true})
 
     })
     ipcMain.handle('evFile:parse',(event, fileList, rootFolderPath)=>{
@@ -125,39 +125,55 @@ function parsefilepath(rootFolderPath,filepath){
 
 }
 function parseFile(rawFile,path){
-    const files=[{
+    const fileComponents=[{
         path:path,
-        state:0,
+        state:4,
     }]
-    let definepath,testpath
+
+    let definepath,testpath, parentComponent, lastState
+
+
+
     rawFile
         .match(/(?:x?define|x?it|\/\/ARRANGE|\/\/ACT|\/\/ASSERT).*/g)
         .forEach((line)=>{
             console.log(line)
             if(line.match(/x?define/)){
+                lastState=(line.match(/xdefine/))?TESTSTATE.untested:TESTSTATE.manually
                 definepath=path +'/'+getTitle(line)
-                files.push({
+
+                fileComponents.push({
                     path:definepath,
-                    state:(line.match(/xdefine/))?TESTSTATE.untested:TESTSTATE.manually
+                    state:lastState
                     
                 })
+                fileComponents[0]=updateState(fileComponents[0],lastState);
             }else if(line.match(/x?it/)){
 
+                lastState=(line.match(/xit/))?TESTSTATE.manually:TESTSTATE.automated
                 testpath=definepath +'/'+getTitle(line)
-                files.push({
+                fileComponents.push({
                     path:testpath,
                     steps:[],
                     weight:1,
-                    state:(line.match(/xit/))?TESTSTATE.manually:TESTSTATE.automated
+                    state:lastState
                 })
+                
+                fileComponents[0]=updateState(fileComponents[0],lastState);
             }else{
                 const 
-                    index=(files.length-1)||0
-                    parentTest =files[index]
+                    index=(fileComponents.length-1)||0
+                    parentTest =fileComponents[index]
                 parentTest.steps.push(line)
             }
         })
-    return files
+    return fileComponents
+}
+function updateState(component,state){
+    if(component.state > state){
+        component.state=state
+    }
+    return component
 }
 function getTitle(line){
     return line.match(/\('([^']*)/g)[0].replace('(\'','')
