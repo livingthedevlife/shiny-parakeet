@@ -49,15 +49,22 @@ btnListFiles.addEventListener('click', async () => {
       hierarchy, 
       {
 
+        width : chart.clientWidth, // outer width, in pixels
+        height : chart.clientHeight, // outer height, in pixels
         color: null,
         fill:d=>{return colorState(d)},
-        label: d => d.id.match(/[^\/]+$/),
+        label: d => d.id.match(/[^\/]+$/)||'Testroot',
         title: (d) => formatTestSteps(d)// hover text
       }
-    )
+    ),
+    chartFirstChild=chart.firstChild
+    if(chartFirstChild){
+      chartFirstChild.remove()
+    }
+    chart.appendChild(diagram);
+    
     // `${n.ancestors().reverse().map(d => d.id).join(".")}\n${n.value.toLocaleString("en")}`
-    console.log('hierarchy',hierarchy)
-    chart.append(diagram)
+    //console.log('hierarchy',hierarchy)
  })
 function getNodeState(d){
   let state=0
@@ -133,7 +140,7 @@ function Icicle(data, { // data is either tabular (array of objects) or hierarch
     round = false, // whether to round to exact pixels
     color = d3.interpolateRainbow, // color scheme, if any
     fill = "#ccc", // fill for node rects (if no color encoding)
-    fillOpacity = 0.6, // fill opacity for node rects
+    fillOpacity = 1, // fill opacity for node rects
   } = {}) {
   
     // If id and parentId options are specified, or the path option, use d3.stratify
@@ -200,7 +207,6 @@ function Icicle(data, { // data is either tabular (array of objects) or hierarch
     text.append("tspan")
         .attr("fill-opacity", 0.7)
         .attr("dx", label == null ? null : 3)
-        .text(d => format(d.value));
   
     if (title != null) cell.append("title")
         .text(d => title(d.data, d));
