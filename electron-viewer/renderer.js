@@ -59,6 +59,14 @@ btnListFiles.addEventListener('click', async () => {
     console.log('hierarchy',hierarchy)
     chart.append(diagram)
  })
+function getNodeState(d){
+  let state=0
+  if(d.data && d.data.data && d.data.data.state){
+    state= d.data.data.state
+  }
+  return state
+}
+
  function colorState(d){
   let state = getNodeState(d)
 
