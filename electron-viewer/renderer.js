@@ -51,11 +51,11 @@ btnListFiles.addEventListener('click', async () => {
 
         color: null,
         fill:d=>{return colorState(d)},
-        label: d => d.id,
-        title: (d, n) => `${n.ancestors().reverse().map(d => d.id).join(".")}\n${n.value.toLocaleString("en")}` // hover text
+        label: d => d.id.match(/[^\/]+$/),
+        title: (d) => formatTestSteps(d)// hover text
       }
     )
-    
+    // `${n.ancestors().reverse().map(d => d.id).join(".")}\n${n.value.toLocaleString("en")}`
     console.log('hierarchy',hierarchy)
     chart.append(diagram)
  })
@@ -65,6 +65,29 @@ function getNodeState(d){
     state= d.data.data.state
   }
   return state
+}
+
+function getNodeSteps(d){
+  let steps=null
+  if(d.data && d.data && d.data.steps){
+    steps= d.data.steps
+  }
+  return steps
+}
+
+function formatTestSteps(d){
+  let steps = getNodeSteps(d)
+  
+  console.log('d',d)
+  if(steps){
+    // steps=steps.map((step)=>{
+    //  step.replace(/(\/\/ARRANGE|\/\/ACT|\/\/ASSERT).*/,'')
+    //}) 
+    steps=steps.join("\r\n")
+    steps='TESTSTEPS:\r\n\r\n'+steps
+  }
+  console.log('steps',steps)
+  return steps
 }
 
  function colorState(d){
