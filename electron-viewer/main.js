@@ -66,7 +66,6 @@ function addIpcHandles(){
 
     ipcMain.handle('evFile:list',(event, folderPath)=>{
         return dir.files(folderPath, {sync:true})
-
     })
     ipcMain.handle('evFile:parse',(event, fileList, rootFolderPath)=>{
         let itemArray=[]
@@ -74,6 +73,7 @@ function addIpcHandles(){
         fileList.forEach((filepath)=>{
             const path = parsefilepath(rootFolderPath,filepath)
             console.log(path)
+
             try {
                 const 
                     data = fs.readFileSync(filepath, 'utf8')
@@ -101,6 +101,32 @@ function addIpcHandles(){
             ]
         }
     })
+    ipcMain.handle('dia:print',()=>{
+        //let pdf = document.getElementById('pdf');
+        let filepath1 = path.join(__dirname, '../print1.pdf');
+         
+        let options = {
+            marginsType: 0,
+            pageSize: 'A4',
+            printBackground: true,
+            printSelectionOnly: false,
+            landscape: false
+        }
+        // let win = BrowserWindow.getAllWindows()[0];
+        let win = BrowserWindow.getFocusedWindow();
+         
+        win.webContents.printToPDF(options).then(data => {
+            fs.writeFile(filepath1, data, function (err) {
+                if (err) {
+                    console.log(err);
+                } else {
+                    console.log('PDF Generated Successfully');
+                }
+            });
+        }).catch(error => {
+            console.log(error)
+        });
+    })
 
 }
 function parseFileObject(element){
@@ -119,6 +145,7 @@ for (const [key, value] of Object.entries(element)) {
 
   }
 }
+
 
 function parsefilepath(rootFolderPath,filepath){
     return filepath.replace(rootFolderPath,'').replace(/^\\/,'').replace('\\','/')
