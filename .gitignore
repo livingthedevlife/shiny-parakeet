@@ -2,3 +2,5 @@ workspace.code-workspace
 node_modules
 
 *.pdf
+electron-viewer/out/
+electron-viewer/testdata/e2e/

@@ -152,6 +152,9 @@ function parsefilepath(rootFolderPath,filepath){
 
 }
 function parseFile(rawFile,path){
+    if(!path.match(/.spec.js|cy.js$/)){
+        return []
+    }
     const fileComponents=[{
         path:path,
         state:4,
@@ -162,11 +165,11 @@ function parseFile(rawFile,path){
 
 
     rawFile
-        .match(/(?:x?define|x?it|\/\/ARRANGE|\/\/ACT|\/\/ASSERT).*/g)
+        .match(/^\s*(x?describe|x?define|x?it|\/\/ARRANGE|\/\/ACT|\/\/ASSERT).*/mg)
         .forEach((line)=>{
             console.log(line)
-            if(line.match(/x?define/)){
-                lastState=(line.match(/xdefine/))?TESTSTATE.untested:TESTSTATE.manually
+            if(line.match(/x?define|x?describe/)){
+                lastState=(line.match(/xdefine|xdescribe/))?TESTSTATE.untested:TESTSTATE.manually
                 definepath=path +'/'+getTitle(line)
 
                 fileComponents.push({
@@ -203,5 +206,6 @@ function updateState(component,state){
     return component
 }
 function getTitle(line){
+    console.log('getTitle','line',line)
     return line.match(/\('([^']*)/g)[0].replace('(\'','')
 }

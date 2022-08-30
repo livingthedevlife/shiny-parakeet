@@ -42,8 +42,10 @@ document.getElementById('toggle-dark-mode').addEventListener('click', async () =
 btnListFiles.addEventListener('click', async () => {
         fileList= await window.evFile.list(rootFolderPath.innerHTML)
         
+       console.log('fileList',fileList)
        let files= await window.evFile.parseFilesFromList(fileList,rootFolderPath.innerHTML)
        globalfileList=files
+       console.log('files',files)
 
     preListFiles.innerHTML=JSON.stringify(files)
   })
@@ -72,6 +74,7 @@ btnListFiles.addEventListener('click', async () => {
       //console.log('hierarchy',hierarchy)
    }) 
    btnShowSun.addEventListener('click', async ()=>{
+    chart.clientHeight = chart.clientWidth
     const 
       hierarchy=d3.stratify().path(d => d.path)(globalfileList),
       diagram=Sunburst(
